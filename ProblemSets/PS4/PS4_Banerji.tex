@@ -1,0 +1,32 @@
+\documentclass[12pt,letterpaper]{article}
+\usepackage{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{\textbf{Problem Set 4}}
+\author{Jhinuk Banerji}
+\date{February 23, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Question 7: Data Sources for Web Scraping}
+
+There are some data sources I would be interested in scraping for my research. First, \textbf{Federal Election Commission (FEC)} website for observing the fundraising patterns by candidate gender. Second, \textbf{OpenSecrets.org} for data on political donations, lobbying expenditures, and candidate profiles. Third, the \textbf{Inter-Parliamentary Union (IPU)} for getting country-level data on women's representation in national parliaments over time.
+
+\section*{Question 6: sparklyr exercise}
+
+\subsection*{Part (b): What is df?}
+
+The object df is a Spark DataFrame, specifically a tbl\_spark object. Unlike a standard R data frame, which is stored in memory, a tbl\_spark is a distributed dataset stored across Spark's cluster nodes, where computations are executed lazily on the Spark backend rather than immediately in R.
+
+\subsection*{Part (c): Filtered output}
+
+After filtering for rows where "Sepal\_Length $>$ 5.5", the resulting Spark DataFrame contains only those observations from the iris dataset meeting that condition. The printed output would display a preview of the first few rows and columns.
+
+\subsection*{Part (d): Number of rows}
+
+Of the 150 total observations in the "iris" dataset, 71 have \texttt{"Sepal\_Length > 5.5"}. The \texttt{sdf\_nrow()} function computes this count by executing the query on the Spark cluster and returning the result to R.
+
+\end{document}
+
