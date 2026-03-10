@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+
+\title{\textbf{Problem Set 5}: Web Scraping and APIs}
+\author{Jhinuk Banerjee}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Web Scraping: Perfume Data from Wikipedia}
+
+\subsection*{What data did I collect?}
+I scraped a table for comparing the natural versus the synthetic perfume
+ingredients from a Wikipedia article on Perfumes
+(\url{https://en.wikipedia.org/wiki/Perfume}).
+This table contains five rows comparing natural and synthetic perfumes 
+across different dimensions like variance, components, scent uniqueness,
+scent complexity, and price. I used the \texttt{rvest} and
+\texttt{httr} packages in R to send an HTTP GET request with a
+browser user-agent header, parse the returned HTML, and extract
+the \texttt{wikitable}-class table into a data frame.
+
+\subsection*{Why does this interest me?}
+I really like perfumes and thought it would be interesting to get data on something I like. The natural versus synthetic divide in the
+fragrance industry reflects different tensions in luxury markets, like authenticity, relevance for
+consumption and gender-targeted marketing. The price
+row is interesting from an economics perspective,
+as it reflects how the extraction methods and supply chain constraints
+shape luxury goods pricing.
+
+\subsection*{Will it be useful?}
+This table is quite illustrative, and the scraping skills practiced here can be used to collect larger fragrance datasets. For instance, getting cross-sectional data on perfume characteristics,
+gender targeting and pricing could be useful for future research
+on gender and consumption.
+
+\subsection*{Resources used}
+I used the \texttt{rvest} tidyverse documentation
+(\url{https://rvest.tidyverse.org/}) and the \texttt{httr} package
+documentation for guidance on setting user-agent headers to
+handle HTTP connections reliably.
+
+\section{API Data: World Bank Gender Indicators}
+
+\subsection*{What data did I collect?}
+I used the \texttt{wbstats} package in R to query the World Bank
+API. I retrieved two indicators for all countries from 2000 to
+2023: (1) female labor force participation as a share of the total
+labor force (\texttt{SL.TLF.TOTL.FE.ZS}), and (2) the share of
+seats held by women in national parliaments
+(\texttt{SG.GEN.PARL.ZS}). The resulting dataset contains 5,208
+country-year observations.
+
+\subsection*{What did I find?}
+The data reveal significant cross-national variation in both
+indicators. Female labor force participation ranges from a minimum
+of about 6.8\% to a maximum of 54.8\%, with a mean of 41.1\%.
+Women's parliamentary representation ranges from 0\% to 63.75\%,
+with a mean of 18.8\%, reflecting that women remain
+underrepresented in legislatures globally, even though their participation
+has grown over the period. 
+
+\subsection*{Why is this useful?}
+These indicators are directly relevant to my dissertation research
+on economic insecurity and gender in politics. The World Bank
+panel provides clean, standardized cross-national data that could
+complement my U.S. state legislature elections data. 
+
+\subsection*{Packages used}
+I used the \texttt{wbstats} package (v1.1), which provides a clean
+R interface to the World Bank's public API. No API key is required.
+Documentation is available at
+\url{https://CRAN.R-project.org/package=wbstats}.
+
+\end{document}
