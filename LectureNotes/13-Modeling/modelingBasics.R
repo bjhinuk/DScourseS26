@@ -4,7 +4,7 @@ library(tidyverse)
 df <- as_tibble(mtcars)
 
 # mpg = b0 + b1*hp + b2*wt
-est <- lm(mpg ~ hp + wt, data=df)
+est <- lm(mpg ~ hp + I(hp^2) wt, data=df)
 summary(est)
 
 # plot regression line
@@ -23,6 +23,8 @@ mpg_diff <- -3.87783*(-.5)
 # New model: V engine or Straight engine?
 est <- glm(vs ~ hp + wt, data=df, family = "binomial")
 est1<- glm(as.factor(vs) ~ hp + wt, data=df, family = "binomial") # same thing
+summary(est)
+summary(est1)
 
 ## Prediction problem: what is Pr(V=1) if hp = 160, wt=3000?
 p <- exp(7.41037 - 0.08535*160 + 1.00334*3)/
