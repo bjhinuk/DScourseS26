@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{tabularray}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{codehigh}
+\usepackage[normalem]{ulem}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\usepackage{setspace}
+\onehalfspacing
+
+\title{\textbf{Problem Set 7}\\
+\large Econ 5253 }
+\vspace{-0.9cm}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+%===========================================
+\section*{Question 6: Summary Statistics}
+%===========================================
+
+Table \ref{tab:summary} presents summary statistics for the cleaned dataset of 2,229 women working in the US in 1988, after dropping observations with missing \texttt{hgc} or \texttt{tenure}.
+
+\begin{table}[H]
+\centering
+\caption{Summary Statistics}
+\label{tab:summary}
+\begin{tblr}[         %% tabularray outer open
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-8}{solid, black, 0.05em},
+hline{1}={1-8}{solid, black, 0.08em},
+hline{11}={1-8}{solid, black, 0.08em},
+hline{6}={1-8}{solid, black, 0.1em},
+}                     %% tabularray inner close
+& Unique & Missing Pct. & Mean & SD & Min & Median & Max \\
+logwage & 670 & 25 & 1.6 & 0.4 & 0.0 & 1.7 & 2.3 \\
+hgc & 16 & 0 & 13.1 & 2.5 & 0.0 & 12.0 & 18.0 \\
+tenure & 259 & 0 & 6.0 & 5.5 & 0.0 & 3.8 & 25.9 \\
+age & 13 & 0 & 39.2 & 3.1 & 34.0 & 39.0 & 46.0 \\
+&  & N & \% &   &   &   &   \\
+college & college grad & 530 & 23.8 &   &   &   &   \\
+& not college grad & 1699 & 76.2 &   &   &   &   \\
+married & married & 1431 & 64.2 &   &   &   &   \\
+& single & 798 & 35.8 &   &   &   &   \\
+\end{tblr}
+\end{table}
+
+\noindent\textbf{Missing rate for log wages:} 25.12\% of observations (560 out of 2,229) are missing \texttt{logwage}.
+
+\bigskip
+
+\noindent\textbf{Missing data mechanism:} The most plausible mechanism is \textbf{MAR (Missing At Random)}. Women with lower education, shorter tenure, or in informal work are more likely to have missing wages, but this relationship runs through observable variables already in our data. MCAR is implausible because reporting status is clearly correlated with individual characteristics. MNAR is possible if very low earners systematically conceal wages, but MAR is the standard defensible assumption when rich observable controls are available.
+
+%===========================================
+\section*{Question 7: Imputation and Regression}
+%===========================================
+
+I estimate the following model under four imputation strategies:
+
+\begin{equation}
+\log(\text{wage})_i = \beta_0 + \beta_1\,\text{hgc}_i + \beta_2\,\text{college}_i + \beta_3\,\text{tenure}_i + \beta_4\,\text{tenure}^2_i + \beta_5\,\text{age}_i + \beta_6\,\text{married}_i + \varepsilon_i
+\end{equation}
+
+The coefficient of interest is $\hat{\beta}_1$, the return to an additional year of schooling. The true value is $\beta_1 = 0.093$.
+
+\begin{table}[H]
+\centering
+\begin{talltblr}[         %% tabularray outer open
+caption={Returns to Schooling Under Different Imputation Methods},
+note{}={+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001},
+]                     %% tabularray outer close
+{                     %% tabularray inner open
+colspec={Q[]Q[]Q[]Q[]Q[]},
+hline{2}={1-5}{solid, black, 0.05em},
+hline{16}={1-5}{solid, black, 0.05em},
+hline{1}={1-5}{solid, black, 0.08em},
+hline{25}={1-5}{solid, black, 0.08em},
+column{2-5}={}{halign=c},
+column{1}={}{halign=l},
+}                     %% tabularray inner close
+& Complete Cases & Mean Imputation & Pred. Imputation & MICE \\
+(Intercept) & \num{0.534}*** & \num{0.708}*** & \num{0.534}*** & \num{0.577}*** \\
+& (\num{0.146}) & (\num{0.116}) & (\num{0.112}) & (\num{0.130}) \\
+hgc & \num{0.062}*** & \num{0.050}*** & \num{0.062}*** & \num{0.060}*** \\
+& (\num{0.005}) & (\num{0.004}) & (\num{0.004}) & (\num{0.005}) \\
+collegenot college grad & \num{0.145}*** & \num{0.168}*** & \num{0.145}*** & \num{0.115}*** \\
+& (\num{0.034}) & (\num{0.026}) & (\num{0.025}) & (\num{0.030}) \\
+tenure & \num{0.050}*** & \num{0.038}*** & \num{0.050}*** & \num{0.042}*** \\
+& (\num{0.005}) & (\num{0.004}) & (\num{0.004}) & (\num{0.005}) \\
+I(tenure\textasciicircum{}2) & \num{-0.002}*** & \num{-0.001}*** & \num{-0.002}*** & \num{-0.001}*** \\
+& (\num{0.000}) & (\num{0.000}) & (\num{0.000}) & (\num{0.000}) \\
+age & \num{0.000} & \num{0.000} & \num{0.000} & \num{0.001} \\
+& (\num{0.003}) & (\num{0.002}) & (\num{0.002}) & (\num{0.002}) \\
+marriedsingle & \num{-0.022} & \num{-0.027}* & \num{-0.022}+ & \num{-0.015} \\
+& (\num{0.018}) & (\num{0.014}) & (\num{0.013}) & (\num{0.016}) \\
+Num.Obs. & \num{1669} & \num{2229} & \num{2229} & \num{2229} \\
+Num.Imp. &  &  &  & \num{5} \\
+R2 & \num{0.208} & \num{0.147} & \num{0.277} & \num{0.229} \\
+R2 Adj. & \num{0.206} & \num{0.145} & \num{0.275} & \num{0.227} \\
+AIC & \num{1179.9} & \num{1091.2} & \num{925.5} &  \\
+BIC & \num{1223.2} & \num{1136.8} & \num{971.1} &  \\
+Log.Lik. & \num{-581.936} & \num{-537.580} & \num{-454.737} &  \\
+F & \num{72.917} & \num{63.973} & \num{141.686} &  \\
+RMSE & \num{0.34} & \num{0.31} & \num{0.30} &  \\
+\end{talltblr}
+\end{table}
+
+\noindent\textbf{Discussion:} All four estimates of $\hat{\beta}_1$ fall below the true value of 0.093:
+
+\begin{itemize}
+  \item \textbf{Complete cases} ($\hat{\beta}_1 = 0.062$): Uses only the 1,669 observations with observed log wages. This is our baseline and is valid under MCAR.
+  \item \textbf{Mean imputation} ($\hat{\beta}_1 = 0.050$): The most biased estimate. Replacing missing values with the mean eliminates all residual variation in imputed observations, compressing the outcome distribution and attenuating the slope. Standard errors are also artificially small due to the inflated sample size carrying no real information.
+  \item \textbf{Predicted value imputation} ($\hat{\beta}_1 = 0.062$): Identical point estimate to complete cases --- imputed values are exact linear predictions from that model, so re-estimating on the full sample does not change the slope. However the standard error is smaller (0.004 vs 0.005), which is misleading since imputed observations add no real new variation.
+  \item \textbf{MICE} ($\hat{\beta}_1 = 0.060$): The most principled approach under MAR. By generating multiple stochastic imputations and pooling via Rubin's rules, MICE preserves distributional uncertainty and produces the most honest standard errors. It is the preferred method in applied work.
+\end{itemize}
+
+All methods underestimate the true $\beta_1 = 0.093$, suggesting either a mild MNAR component or attenuation from other sources in this dataset.
+
+%===========================================
+\section*{Question 8: Project Progress}
+%===========================================
+
+My dissertation examines the relationship between economic insecurity and women's political representation in U.S. state legislatures. I use the State Legislative Elections Returns (SLER) database and with American Community Survey (ACS) district-level data (upper and lower state legislative chambers), covering approximately 25,778 candidate-race observations across multiple redistricting cycles. My key independent variables are Indices for Economic Insecurity built from district-level ACS measures (poverty, unemployment, median income, SNAP receipt).
+
+My modeling approaches include: (1) logistic regression and linear probability models for the baseline indices (Equally weighted and PCA methods followed); (2) a Heckman two-step selection model to address non-random entry of women into candidacy; (3) Conditional Mixed Process bivariate probit models to examine role model effects; (4) Oster bounds for robustness to omitted variable bias; and (5) Oaxaca-Blinder and Fairlie decompositions to examine racial heterogeneity in the gender gap. 
+
+I am working on figuring out a better instrument to better suit my model. I am actively working on constructing a Bartik style instrument. 
+
+\end{document}
