@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{geometry}
+\usepackage{tabularray}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{codehigh}
+\usepackage[normalem]{ulem}
+\UseTblrLibrary{booktabs}
+\UseTblrLibrary{siunitx}
+\newcommand{\tinytableTabularrayUnderline}[1]{\underline{#1}}
+\newcommand{\tinytableTabularrayStrikeout}[1]{\sout{#1}}
+\NewTableCommand{\tinytableDefineColor}[3]{\definecolor{#1}{#2}{#3}}
+\geometry{margin=1in}
+
+\title{\textbf{Problem Set 8: } \\
+Matrix Algebra and Optimization}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section*{Question 5: Closed-Form OLS}
+The closed-form OLS estimator $\hat{\beta}^{OLS} = (X'X)^{-1}X'Y$ yields estimates 
+very close to the true $\beta$ vector. With $N = 100{,}000$ observations, the law of 
+large numbers ensures the estimates converge tightly to the true values. Specifically, 
+the maximum deviation from the truth across all ten coefficients is less than $0.01$.
+
+\section*{Question 6: Gradient Descent}
+Using a learning rate of $0.0000003$, gradient descent converged at iteration 274, 
+recovering estimates that match the closed-form solution to at least four decimal places. 
+The small step size ensures numerical stability throughout the iterations. This confirms 
+that the OLS objective function is convex and gradient descent reliably finds the global 
+minimum.
+
+\section*{Question 7: L-BFGS and Nelder-Mead}
+Both the L-BFGS and Nelder-Mead algorithms recover coefficient estimates essentially 
+identical to the closed-form OLS solution. The two methods do not materially differ 
+from each other, confirming that the objective function is well-behaved and the 
+optimum is unique. L-BFGS uses gradient information while Nelder-Mead is 
+derivative-free, yet both converge to the same answer.
+
+\section*{Question 8: MLE via L-BFGS}
+The MLE estimates of $\beta$ match the OLS estimates exactly, as expected in a linear 
+model with normally distributed errors where OLS and MLE coincide. The estimated 
+$\hat{\sigma} = 0.4999$, which is extremely close to the true value of $\sigma = 0.5$ 
+used to generate the data. This provides further validation that the data generating 
+process was correctly implemented.
+
+\section*{Question 9: OLS via \texttt{lm()} and Comparison to Ground Truth}
+Table 1 presents the OLS estimates obtained using \texttt{lm(Y \textasciitilde\ X - 1)}, 
+where the \texttt{-1} suppresses R's automatic intercept since the first column of $X$ 
+already contains a vector of ones. All ten coefficient estimates are extremely close 
+to the true $\beta$ values:
+\[
+\beta = [1.5,\ -1,\ -0.25,\ 0.75,\ 3.5,\ -2,\ 0.5,\ 1,\ 1.25,\ 2]'
+\]
+The maximum deviation from the truth across all ten coefficients is less than $0.01$, 
+which reflects the precision gained from a large sample of $N = 100{,}000$ observations. 
+This confirms that OLS is unbiased and consistent under the classical linear model 
+assumptions. All methods --- closed-form, gradient descent, L-BFGS, Nelder-Mead, 
+and MLE --- recover virtually identical estimates, further validating the implementation.
+
+\input{PS8_table_Jhinuk.tex}
+
+\end{document}
