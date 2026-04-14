@@ -1,0 +1,64 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+
+\title{\textbf{Problem Set 9:} \\
+LASSO and Ridge Regression}
+\author{Jhinuk Banerjee}
+\date{April 14, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Question 7: Dimensions of Training Data}
+
+The original Housing dataset has 13 predictor variables (excluding \texttt{medv}).
+After taking log of the outcome, it converts \texttt{chas} to a
+factor and creates all pairwise interactions among the continuous predictors, and generates
+6th-degree polynomials of each continuous variable. This prepped the training data with
+379 rows and 74 predictor columns (75 total including \texttt{medv}).
+This represents 61 additional $X$ variables compared to the original 13 predictors.
+
+\section*{Question 8: LASSO Results}
+
+Using 6-fold cross-validation with $\alpha = 1$ (LASSO), the optimal penalty
+parameter selected by cross-validation is $\hat{\lambda} = 0.0099$.
+The in-sample RMSE is 0.1558 and the out-of-sample RMSE on the test set
+is 0.1711.
+
+\section*{Question 9: Ridge Regression Results}
+
+Using 6-fold cross-validation with $\alpha = 0$ (ridge regression), the optimal
+penalty parameter is $\hat{\lambda} = 0.0491$.
+The out-of-sample RMSE on the test set is 0.1760.
+
+\section*{Question 10: Discussion}
+
+\subsection*{Can OLS be estimated when columns exceed rows?}
+
+No. Ordinary least squares requires inverting the matrix $X'X$, which becomes
+singular when the number of predictors $p$ exceeds the number of observations $N$.
+In such a setting, OLS has no unique solution. This is precisely the motivation
+for penalized regression methods like LASSO and ridge regression: by adding a
+regularization penalty, the optimization problem becomes well-posed even when
+$p > N$. In our case, after the recipe the training data has 74 predictors and
+379 observations, so OLS would still technically be feasible, but with heavy
+overfitting risk.
+
+\subsection*{Bias-Variance Tradeoff}
+
+Both LASSO and ridge regression address the bias-variance tradeoff by shrinking
+coefficients toward zero, reducing variance at the cost of introducing some bias.
+LASSO ($\alpha = 1$) performs variable selection by shrinking some coefficients
+exactly to zero, producing a sparse model. Ridge ($\alpha = 0$) shrinks all
+coefficients proportionally but retains all predictors.
+
+In terms of out-of-sample RMSE, LASSO achieves 0.1711 while ridge achieves
+0.1760. LASSO slightly outperforms ridge here, suggesting that some of the
+engineered features (interactions and polynomial terms) are not genuinely
+useful for prediction, and LASSO's hard zeroing of those coefficients reduces
+overfitting. Both models perform similarly, indicating neither extreme of the
+bias-variance tradeoff dominates strongly in this dataset.
+
+\end{document}
