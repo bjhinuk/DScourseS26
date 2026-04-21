@@ -1,0 +1,50 @@
+\documentclass{article}
+\usepackage{booktabs}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{\textbf{Problem Set 10:} 
+\\Cross-Validation and Classification}
+\author{}
+\date{April 21, 2026}
+
+\begin{document}
+\maketitle
+
+\section*{Overview}
+This problem set compares five machine learning algorithms on the UCI Adult Income dataset. The goal is to classify whether an individual earns more than \$50,000 per year (\texttt{high.earner}). Each algorithm was tuned via 3-fold cross-validation, and final performance was evaluated on a held-out test set comprising 20\% of the data.
+
+\section*{Optimal Tuning Parameters and Out-of-Sample Performance}
+
+Table \ref{tab:results} reports the optimal hyperparameter values selected by cross-validation and the resulting out-of-sample accuracy for each algorithm.
+
+\begin{table}[h!]
+\centering
+\caption{Optimal Tuning Parameters and Test Set Accuracy}
+\label{tab:results}
+\begin{tabular}{llll}
+\toprule
+Algorithm & Tuning Parameter(s) & Optimal Value(s) & Test Accuracy \\
+\midrule
+Logistic Regression & penalty ($\lambda$) & 0.0000000001 & 0.853 \\
+Decision Tree & cost\_complexity & 0.001 & 0.868 \\
+                    & tree\_depth & 15 & \\
+                    & min\_n & 10 & \\
+Neural Network & hidden\_units & 7 & 0.845 \\
+               & penalty ($\lambda$) & 1 & \\
+k-Nearest Neighbor & neighbors & 30 & 0.843 \\
+SVM (RBF) & cost & 1 & 0.864 \\
+          & rbf\_sigma & 0.25 & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Comparison of Out-of-Sample Performance}
+
+The decision tree achieved the highest out-of-sample accuracy at 86.8\%, followed closely by the SVM at 86.4\%. Logistic regression performed well at 85.3\%, despite being the simplest model. The neural network and k-nearest neighbor classifier performed slightly worse, at 84.5\% and 84.3\% respectively.
+
+Several observations are worth noting. First, the decision tree's optimal cost complexity was very low (0.001), suggesting the data supports a relatively complex tree structure. The optimal depth of 15 with a minimum node size of 10 indicates the tree was allowed to grow fairly deep. Second, the SVM selected a moderate cost ($C=1$) and a small kernel width ($\sigma=0.25$), reflecting a relatively smooth decision boundary. Third, the logistic LASSO selected a near-zero penalty, meaning regularization was minimal and most predictors were retained. Fourth, the neural network favored 7 hidden units with strong regularization (penalty = 1), suggesting some complexity but with shrinkage to prevent overfitting. Finally, kNN selected the maximum number of neighbors tested (30), indicating that smoother, more averaged decision boundaries worked best.
+
+Overall, the tree-based and kernel-based methods outperformed the distance-based and linear approaches on this dataset, though the differences in accuracy are modest (less than 3 percentage points across all five algorithms).
+
+\end{document}
