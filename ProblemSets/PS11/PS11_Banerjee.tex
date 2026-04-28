@@ -1,0 +1,436 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{natbib}
+\usepackage{hyperref}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{dcolumn}
+\usepackage{rotating}
+\usepackage{threeparttable}
+
+\doublespacing
+\bibpunct{(}{)}{;}{a}{,}{,}
+
+\title{Women Finance Ministers' Political Affiliation and Fiscal Policy Outcomes}
+\author{Jhinuk Banerjee\\
+        University of Oklahoma}
+\date{April 2026}
+
+\begin{document}
+
+\maketitle
+
+%% -----------------------------------------------------------
+\begin{abstract}
+This paper examines whether women Finance Ministers' political affiliation shapes
+their fiscal policy choices, and whether those effects are conditioned by the
+ideological alignment or distance between the Finance Minister and the head of
+government. Using a balanced country-year panel of Finance Ministers drawn from
+WhoGov (within and cross-sectional versions merged), matched with ideology data
+from the Global Leader Ideology Dataset (GLID) and fiscal outcomes from the IMF
+World Economic Outlook, I estimate a two-way fixed effects (TWFE) model with
+country and year fixed effects across up to 177 countries from 1980--2023.
+The analysis identifies 411 women Finance Ministers across the full sample.
+Causal identification addresses the non-random ``glass cliff'' appointment
+pattern by instrumenting for women Finance Minister appointment using the count
+of women in other cabinet positions. The paper contributes to the literature
+on gender and economic institutions, descriptive versus substantive representation,
+and the political economy of fiscal policy.
+\end{abstract}
+
+\newpage
+
+%% -----------------------------------------------------------
+\section{Introduction}
+\label{sec:intro}
+%% -----------------------------------------------------------
+
+Women's representation in political institutions has grown modestly over recent
+decades, but men continue to dominate economic policymaking positions globally.
+As of early 2026, women hold only 22.4\% of cabinet positions worldwide, a
+figure that has declined from 2024, and only 14 countries have achieved gender
+parity in their cabinets. The Finance Ministry one of the most powerful and
+consequential cabinet portfolios remains particularly male-dominated. Against
+this backdrop, a central question for political economy and gender studies
+arises: when women do break through to head Finance Ministries, do they govern
+differently from men?
+
+A large body of scholarship documents gender differences in political attitudes,
+risk preferences, and distributive priorities. However, much less is known about
+whether partisan identity moderates or supersedes these gender differences once
+women enter executive positions of real economic authority. Is a left-wing woman
+Finance Minister more similar to a left-wing man than to a right-wing woman?
+Does ideological alignment between the Finance Minister and the head of government
+mediate the degree to which any gender-specific fiscal patterns emerge?
+
+This paper addresses these questions by constructing a novel country-year panel
+combining three datasets: WhoGov, the Global Leader Ideology Dataset (GLID), and
+the IMF World Economic Outlook (WEO). The merged dataset covers up to 177
+countries from 1980--2023 and identifies 411 women Finance Ministers---a
+substantially larger sample than prior cross-national work. The core empirical
+strategy is a two-way fixed effects (TWFE) model augmented with an instrumental
+variable (IV) to address the endogeneity of women FM appointment.
+
+The paper makes three contributions. First, it provides the most comprehensive
+cross-national analysis to date of women Finance Ministers' fiscal policy
+outcomes. Second, it introduces ideology as a moderating variable, testing
+whether the partisan identity of the Finance Minister shapes fiscal behaviour
+differently for women than men. Third, it engages directly with the glass cliff
+literature \citep{armstrong2024} by proposing and implementing an instrument
+for women FM appointment to address crisis-driven selection bias.
+
+The remainder of the paper proceeds as follows. Section~\ref{sec:lit} reviews
+the relevant literature. Section~\ref{sec:data} describes the data and the
+instrument. Section~\ref{sec:empirics} presents the empirical strategy.
+Section~\ref{sec:results} discusses expected results.
+
+%% -----------------------------------------------------------
+\section{Literature Review}
+\label{sec:lit}
+%% -----------------------------------------------------------
+
+The paper builds on three strands of literature: the relationship between
+demographic identity and policymaking in economic institutions; the evidence
+on whether women leaders govern differently; and the political economy of
+fiscal policy and ideology.
+
+A growing body of work establishes that the demographic composition of economic
+institutions shapes both policy decisions and public perceptions of legitimacy.
+\citet{mcdowell2024} show that Black representation within the Federal Reserve
+increases institutional trust among Black respondents, establishing that
+descriptive identity within economic institutions has direct consequences for
+perceived state legitimacy. \citet{bodea2025} find that citizens on average
+trust women central bankers less, particularly during high inflation, pointing
+to a persistent gender bias in the perception of economic competence.
+\citet{dutta2024} document structural barriers for women within the Federal
+Reserve itself, finding gender gaps in publication output despite comparable
+or greater work effort by women economists. \citet{charlety2016} show that
+central bank board appointments follow gendered replacement dynamics---women
+are significantly more likely to be appointed when replacing another woman---
+suggesting a tokenism or quota-substitution logic that has direct parallels in
+Finance Ministry appointments.
+
+The evidence on whether women leaders \textit{govern differently} is mixed and
+context-dependent. \citet{chattopadhyay2004} provide clean experimental evidence
+from India showing that randomly assigned female village council leaders invest
+differently from male leaders, particularly in public goods valued by women.
+\citet{atchison2009} find that higher female cabinet representation is associated
+with more female-friendly social policy across a cross-national sample. In the
+fiscal and monetary domains, however, results are more nuanced.
+\citet{masciandaro2020} find that greater female representation on monetary
+policy boards is associated with more hawkish interest rate decisions, directly
+contradicting the stereotype that women policymakers are dovish or risk-averse.
+\citet{suzuki2018} document lower fiscal risk-taking associated with women in
+local public finance in Japan, but note strong dependence on institutional
+context. \citet{moessinger2012} establishes that personal characteristics of
+Finance Ministers, including age and education, affect public debt trajectories,
+confirming that minister-level heterogeneity matters for fiscal outcomes.
+
+A critical strand for identification is the glass cliff literature.
+\citet{armstrong2024} find that women are disproportionately appointed as
+Finance Ministers during financial crises, and that this pattern is strongest
+in countries with no prior female head of government. Crucially, crisis periods
+do not reduce women's tenure relative to men, implying that the glass cliff is
+a selection phenomenon rather than a performance one. \citet{kern2025} document
+a parallel pattern in central banking: sovereign debt crises increase the
+probability of women being appointed to central bank boards, and such
+appointments are associated with more conservative monetary outcomes. Together,
+this evidence implies that naive TWFE estimation of fiscal outcomes on women FM
+indicators will be downward biased, since women are appointed precisely when
+fiscal conditions are deteriorating.
+
+On the ideology side, \citet{vanommeren2021} show strong and persistent
+ideological effects in central banking, with right-leaning appointees pursuing
+more hawkish policy throughout their tenure. This suggests that for Finance
+Ministers, the partisan identity of the appointment may be as important as
+gender. \citet{krook2012} and \citet{obrien2015} document the determinants of
+female cabinet appointments globally, while \citet{field2021} examines the
+institutional conditions under which gender shapes ministerial portfolio
+allocation. None of this work, however, connects women Finance Ministers'
+partisan identity to their fiscal policy choices, the gap this paper addresses.
+
+%% -----------------------------------------------------------
+\section{Data}
+\label{sec:data}
+%% -----------------------------------------------------------
+
+\subsection{Dataset Construction}
+
+The analysis draws on three primary datasets merged into a country-year panel.
+
+\textbf{Cabinet data.} The WhoGov dataset \citep{nyrup2020} combines
+within-country and cross-sectional versions to provide individual-level data on
+cabinet ministers across 177 countries from 1945 to 2023. Key variables include
+minister name, gender, party affiliation, portfolio assignment, and tenure dates.
+Finance Ministers are identified using the binary indicator \texttt{m\_Finance},
+constructed by WhoGov to flag Finance Ministers regardless of variation in
+position titles across countries---an important distinction, since relying on
+the position string alone would miss approximately 180 of the 411 women Finance
+Ministers in the sample. The merged and balanced version of the panel contains
+9,101 country-year Finance Minister observations spanning 1963--2023.
+
+\textbf{Ideology data.} Finance Minister party ideology is constructed in two
+steps. First, an original ideology variable was built for each Finance Minister
+using a combination of AI-assisted coding and Wikipedia biographical sources for each political party in each country,
+classifying each minister's partisan affiliation on a 1--6 left-right scale
+(1 = far left, 6 = far right) across the full country-year sample. This
+minister-level ideology variable (\texttt{fm\_ideology1}) is then
+cross-validated against and supplemented by the Global Leader Ideology Dataset
+(GLID), which provides expert-coded and survey-based left-right scores for heads
+of government across countries and years. The GLID merge also yields the
+head-of-government ideology variable, enabling construction of the ideological
+distance between the Finance Minister and the HOG. The variable
+\texttt{fm\_ideology1} is complete for all 9,101 observations, with mean 3.84
+and standard deviation 1.75 on the 1--6 scale.
+
+\textbf{Fiscal outcomes.} Fiscal data come from the IMF World Economic Outlook
+(WEO) database, providing annual country-level general government revenue,
+expenditure, net lending/borrowing (fiscal balance), and gross debt---all as a
+share of GDP---for 196 countries from 1980--2023. The WEO is preferred over the
+IMF Government Finance Statistics (GFS) because its broader coverage avoids the
+selection problem that would arise from restricting to the 45--74 countries with
+consistent GFS reporting, which are disproportionately high-income OECD economies
+where both women Finance Ministers and constrained fiscal institutions are more
+common. The WEO data were cleaned from wide to long format, with non-numeric
+entries removed, yielding 8,624 usable country-year observations.
+
+\textbf{Merge.} The WhoGov+GLID Finance Minister panel is merged many-to-one
+with the WEO fiscal data on ISO3 country code and year. The merge yields 7,053
+matched observations out of 9,101 total minister-year observations. The 2,048
+unmatched master observations are pre-1980 years excluded from all regressions.
+The effective analysis window is 1980--2023, with approximately 140--169
+countries per year. After matching, 5,393 observations have non-missing fiscal
+balance data (76.5\% of matched observations), forming the core analysis sample.
+Summary statistics from the merged dataset are pending and will be presented in
+the final version of the paper.
+
+\subsection{Instrument: Women in Other Cabinet Positions}
+\label{sec:instrument}
+
+A central identification challenge is that women Finance Minister appointments
+are not random. The glass cliff literature \citep{armstrong2024,kern2025}
+establishes that women are disproportionately appointed during fiscal crises,
+precisely when fiscal outcomes are already deteriorating. A naive TWFE estimate
+will therefore be downward biased.
+
+To address this, I instrument for women FM appointment using the count of women
+in other cabinet positions in the same country-year:
+\[
+Z_{it} = \texttt{n\_female\_minister}_{it} - \mathbf{1}[\text{gender}_{it} = \text{Female}]
+\]
+The \textit{relevance condition} is that countries with more women in cabinet
+generally have a higher probability of appointing a woman to the Finance
+Ministry, through both supply-side effects (a larger pool of politically
+experienced women) and norm diffusion within the executive. The
+\textit{exclusion restriction} requires that the number of women in other
+ministries affects fiscal outcomes only through the Finance Minister channel.
+This is defensible because ministries such as Agriculture, Foreign Affairs,
+and Social Affairs do not directly control the budget. The main threat to
+exclusion---a progressive government simultaneously placing women everywhere
+and pursuing expansionary fiscal policy---is addressed by including HOG ideology
+as a control. A secondary instrument to be explored is the regional diffusion
+variable: the share of countries in the same region that had a woman Finance
+Minister in year $t-1$, capturing peer-pressure and demonstration effects
+plausibly exogenous to any given country's fiscal balance.
+
+%% -----------------------------------------------------------
+\section{Empirical Strategy}
+\label{sec:empirics}
+%% -----------------------------------------------------------
+
+\subsection{IV Two-Way Fixed Effects}
+\label{sec:ivtwfe}
+
+The baseline estimating equation is:
+\vspace{-0.4cm}
+\begin{equation}
+\label{eq:twfe}
+Y_{it} = \beta_1 \text{FemaleFM}_{it} + \beta_2 \text{Ideology}_{it}
+       + \beta_3 (\text{FemaleFM}_{it} \times \text{Ideology}_{it})
+       + \gamma X_{it} + \alpha_i + \lambda_t + \varepsilon_{it}
+\end{equation}
+
+where $Y_{it}$ is a fiscal outcome in country $i$ and year $t$ (revenue,
+expenditure, fiscal balance, or gross debt as \% of GDP); $\text{FemaleFM}_{it}$
+is an indicator equal to 1 when a woman holds the Finance Ministry;
+$\text{Ideology}_{it}$ is the Finance Minister's ideology score (1--6 scale);
+$X_{it}$ is a vector of time-varying controls; $\alpha_i$ are country fixed
+effects; and $\lambda_t$ are year fixed effects. Standard errors are clustered
+at the country level. The coefficient of interest is $\beta_3$, capturing
+whether ideology shapes fiscal behaviour differently by gender.
+
+Time-varying controls include GDP growth rate, inflation rate, a financial
+crisis indicator, HOG ideology, HOG leader experience (years in office), the
+democracy indicator (Regimes of the World), and the share of women in the full
+cabinet. Given the glass cliff endogeneity, $\text{FemaleFM}_{it}$ is treated
+as endogenous and instrumented by $Z_{it}$ (Section~\ref{sec:instrument}).
+The IV-TWFE first stage is:
+
+\begin{equation}
+\label{eq:firststage}
+\text{FemaleFM}_{it} = \pi_1 Z_{it} + \pi_2 \text{Ideology}_{it}
+                      + \gamma X_{it} + \alpha_i + \lambda_t + \nu_{it}
+\end{equation}
+
+with instrument strength evaluated by the first-stage $F$-statistic
+(threshold: $F > 10$). The second stage substitutes
+$\widehat{\text{FemaleFM}}_{it}$ into equation (\ref{eq:twfe}).
+
+\subsection{HOG Alignment Specification}
+\label{sec:hogalign}
+
+To assess whether ideological alignment between the Finance Minister and the
+head of government conditions the gender-ideology effect, I extend
+equation~(\ref{eq:twfe}) to:
+
+\begin{align}
+\label{eq:extended}
+Y_{it} &= \beta_1 \text{FemaleFM}_{it} + \beta_2 \text{Ideology}_{it}
+        + \beta_3 (\text{FemaleFM}_{it} \times \text{Ideology}_{it}) \nonumber \\
+       &\quad + \beta_4 (\text{FemaleFM}_{it} \times \text{HOGIdeology}_{it})
+        + \gamma X_{it} + \alpha_i + \lambda_t + \varepsilon_{it}
+\end{align}
+
+$\beta_4$ captures whether the head of government's ideology moderates the
+fiscal behaviour of women Finance Ministers---for instance, whether ideological
+co-partisanship between the FM and HOG grants the FM greater fiscal discretion,
+or whether a misaligned HOG constrains it. An alternative specification
+replaces the HOG ideology level with the ideological distance measure
+$|\text{Ideology}_{it} - \text{HOGIdeology}_{it}|$ to test whether the
+\textit{degree} of misalignment, not just its direction, shapes outcomes.
+
+%% -----------------------------------------------------------
+\section{Expected Results}
+\label{sec:results}
+%% -----------------------------------------------------------
+
+Results are pending completion of the Stata analysis on the merged dataset.
+The following expectations are grounded in the theory and empirical literature
+reviewed above.
+
+On the OLS TWFE baseline, I expect a negative and significant $\beta_1$:
+women Finance Ministers associated with worse fiscal balances on average,
+reflecting the glass cliff selection mechanism rather than a causal gender
+effect. The ideology interaction $\beta_3$ is the central test: if ideology
+dominates gender, the interaction should be significant and the pure gender
+coefficient should attenuate substantially once ideology is controlled. A
+positive $\beta_3$ would imply that left-wing women Finance Ministers are
+associated with more expansionary fiscal policy relative to right-wing women,
+consistent with standard partisan fiscal theory.
+
+On the IV-TWFE, I expect the women FM coefficient to move toward zero or
+turn positive once the glass cliff selection is purged---mirroring the
+pattern in \citet{armstrong2024} where crisis-driven selection accounts for
+much of the apparent gender-fiscal correlation. A strong first stage
+($F > 10$) is expected given the tight mechanical relationship between
+women's representation in the broader cabinet and Finance Ministry
+appointments.
+
+On the HOG alignment specification, I expect $\beta_4$ to be positive and
+significant---women Finance Ministers with ideologically co-partisan HOGs
+should exhibit stronger partisan fiscal signals---consistent with the
+principal-agent logic that ministerial fiscal discretion is greatest when the
+FM and HOG share partisan interests \citep{vanommeren2021}. These results,
+taken together, would establish that the \textit{type} of woman appointed---
+her ideology and her relationship to the head of government---matters more
+than gender per se for fiscal outcomes.
+
+
+%% -----------------------------------------------------------
+\begin{thebibliography}{}
+ 
+\bibitem[Armstrong et~al., 2024]{armstrong2024}
+Armstrong, B., Barnes, T.~D., Chiba, D., and O'Brien, D.~Z. (2024).
+\newblock Financial crisis and the selection and survival of women finance
+  ministers.
+\newblock {\em American Political Science Review}, 118(1):1--16.
+ 
+\bibitem[Atchison and Down, 2009]{atchison2009}
+Atchison, A. and Down, I. (2009).
+\newblock Women cabinet ministers and female-friendly social policy.
+\newblock {\em Poverty and Public Policy}, 1(2):1--23.
+ 
+\bibitem[Bodea and Kerner, 2025]{bodea2025}
+Bodea, C. and Kerner, A. (2025).
+\newblock Expectations, gender bias and {Federal Reserve} talk: Do {Americans}
+  trust women as central bankers?
+\newblock {\em Journal of Politics}.
+ 
+\bibitem[Charlety et~al., 2016]{charlety2016}
+Charlety, P., Romelli, D., and Santacreu-Vasut, E. (2016).
+\newblock Appointments to central bank boards: Does gender matter?
+\newblock {\em ESSEC Working Paper}.
+ 
+\bibitem[Chattopadhyay and Duflo, 2004]{chattopadhyay2004}
+Chattopadhyay, R. and Duflo, E. (2004).
+\newblock Women as policy makers: Evidence from a randomized policy experiment
+  in {India}.
+\newblock {\em Econometrica}, 72(5):1409--1443.
+ 
+\bibitem[Dutta and Tzur-Ilan, 2024]{dutta2024}
+Dutta, D.~D. and Tzur-Ilan, N. (2024).
+\newblock Gender gaps in the {Federal Reserve} system.
+\newblock {\em Finance and Economics Discussion Series, Board of Governors of
+  the Federal Reserve System}.
+ 
+\bibitem[Field, 2021]{field2021}
+Field, B.~N. (2021).
+\newblock Ministers, gender and political appointments.
+\newblock {\em Government and Opposition}, 56(2):229--247.
+ 
+\bibitem[Kern et~al., 2025]{kern2025}
+Kern, A., Reinsberg, B., and Romelli, D. (2025).
+\newblock Empowering women in central banking.
+\newblock {\em Journal of European Public Policy}, 32(1):1--25.
+ 
+\bibitem[Krook and O'Brien, 2012]{krook2012}
+Krook, M.~L. and O'Brien, D.~Z. (2012).
+\newblock All the president's men? {The} appointment of female cabinet
+  ministers worldwide.
+\newblock {\em Journal of Politics}, 74(3):840--855.
+ 
+\bibitem[Masciandaro et~al., 2020]{masciandaro2020}
+Masciandaro, D., Profeta, P., and Romelli, D. (2020).
+\newblock Do women matter in monetary policy boards?
+\newblock {\em Working Paper}.
+ 
+\bibitem[McDowell and Steinberg, 2024]{mcdowell2024}
+McDowell, D. and Steinberg, D.~A. (2024).
+\newblock Black representation and the popular legitimacy of the {Federal
+  Reserve}.
+\newblock {\em European Journal of Political Economy}.
+ 
+\bibitem[Moessinger, 2012]{moessinger2012}
+Moessinger, M.-D. (2012).
+\newblock Do personal characteristics of finance ministers affect the
+  development of public debt?
+\newblock {\em ZEW Discussion Paper No. 12-068}.
+ 
+\bibitem[Nyrup and Bramwell, 2020]{nyrup2020}
+Nyrup, J. and Bramwell, S. (2020).
+\newblock Who governs? {A} new global dataset on members of cabinets.
+\newblock {\em American Political Science Review}, 114(4):1366--1374.
+ 
+\bibitem[O'Brien et~al., 2015]{obrien2015}
+O'Brien, D.~Z., Mendez, M., Peterson, J.~C., and Shin, J. (2015).
+\newblock Letting down the ladder or shutting the door: Female prime ministers,
+  party leaders, and cabinet ministers.
+\newblock {\em Politics and Gender}, 11(4):689--717.
+ 
+\bibitem[Suzuki and Avellaneda, 2018]{suzuki2018}
+Suzuki, K. and Avellaneda, C.~N. (2018).
+\newblock Women and risk-taking behaviour in local public finance.
+\newblock {\em Public Management Review}, 20(12):1741--1767.
+ 
+\bibitem[van Ommeren and Piccillo, 2021]{vanommeren2021}
+van Ommeren, E. and Piccillo, G. (2021).
+\newblock The central bank governor and interest rate setting by committee.
+\newblock {\em CESifo Economic Studies}, 67(2):134--167.
+ 
+\end{thebibliography}
+%% -----------------------------------------------------------
+ 
+\end{document}
